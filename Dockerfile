@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --upgrade pip
 
-RUN pip install numpy numexpr cython theano tables bottle bottle-log tornado cffi torchvision librosa Pillow pyrouge six tqdm torchtext>=0.2.1 future 
+RUN pip install numpy numexpr cython theano tables bottle bottle-log tornado cffi librosa Pillow pyrouge six tqdm torchtext>=0.2.1 future 
 
 RUN apt-get install -y \
 		wget \
@@ -27,17 +27,8 @@ RUN apt-get install -y \
 		libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tar.xz
-RUN tar xvf Python-3.6.2.tar.xz \
-	&& cd Python-3.6.2 \
-	&& ./configure \
-	&& make altinstall \
-	&& rm /Python-3.6.2.tar.xz
-
-RUN pip3.6 install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp36-cp36m-manylinux1_x86_64.whl \
-	&& pip3.6 install torchvision
-
-
+RUN pip install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp36-cp36m-manylinux1_x86_64.whl \
+	&& pip install torchvision
 
 
 RUN mkdir -p /path/to
