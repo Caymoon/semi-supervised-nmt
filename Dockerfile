@@ -21,14 +21,11 @@ RUN pip install --upgrade pip
 
 RUN pip install numpy numexpr cython theano tables bottle bottle-log tornado cffi librosa Pillow pyrouge six tqdm torchtext>=0.2.1 future 
 
-RUN apt-get install -y \
-		wget \
-		build-essential checkinstall \
-		libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev \
-	&& rm -rf /var/lib/apt/lists/*
+RUN curl -O https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
+RUN bash Anaconda3-5.0.1-Linux-x86_64.sh
+RUN source ~/.bashrc
 
-RUN pip install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp36-cp36m-manylinux1_x86_64.whl \
-	&& pip install torchvision
+RUN conda install pytorch-cpu torchvision -c pytorch
 
 
 RUN mkdir -p /path/to
