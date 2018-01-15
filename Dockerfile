@@ -1,5 +1,5 @@
 #!/bin/sh
-FROM ubuntu:16.04
+FROM pytorch/pytorch:latest
 
 
 RUN apt-get update && apt-get install -y \
@@ -20,13 +20,6 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --upgrade pip
 
 RUN pip install numpy numexpr cython theano tables bottle bottle-log tornado cffi librosa Pillow pyrouge six tqdm torchtext>=0.2.1 future 
-
-RUN curl -O https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
-RUN bash Anaconda3-5.0.1-Linux-x86_64.sh
-RUN source ~/.bashrc
-
-RUN conda install pytorch-cpu torchvision -c pytorch
-
 
 RUN mkdir -p /path/to
 WORKDIR /path/to/
