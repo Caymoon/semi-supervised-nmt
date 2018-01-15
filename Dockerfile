@@ -1,25 +1,7 @@
-#!/bin/sh
-FROM pytorch/pytorch:latest
+FROM opennmt/opennmt:latest
 
-
-RUN apt-get update && apt-get install -y \
-	cmake \
-	git \
-	python \
-	python3 \
-	vim \
-	nano \
-	python-dev \
-	python-pip \
-	python-pygraphviz \
-	xml-twig-tools \
-	wget \
-	sed\
-	curl
-
-RUN pip install --upgrade pip
-
-RUN pip install numpy numexpr cython theano tables bottle bottle-log tornado cffi librosa Pillow pyrouge six tqdm torchtext>=0.2.1 future 
+RUN sudo apt-get update && \
+sudo apt-get install -y wget git sed 
 
 RUN mkdir -p /path/to
 WORKDIR /path/to/
@@ -28,19 +10,16 @@ WORKDIR /path/to/
 RUN git clone https://github.com/moses-smt/mosesdecoder
 
 # Install openNMT
-RUN git clone https://github.com/OpenNMT/OpenNMT-py.git
+RUN git clone https://github.com/OpenNMT/OpenNMT /root/OpenNMT
 WORKDIR /root/OpenNMT
 
-RUN `curl -o ~/OpenNMT/demo-model2_acc_55.34_ppl_8.89_e13.pt  http://download1041.mediafire.com/nnazs6ca5vxg/1nirpipcxdvyi9h/demo-model2_acc_55.34_ppl_8.89_e13.pt`
-RUN wget -O ~/OpenNMT/translate.py http://download1475.mediafire.com/apdrrl2idjrg/qa5egr2mvjd7vwm/translate.py
+RUN curl -o ~/OpenNMT/onmt_baseline_wmt15-all.en-de_epoch13_7.19_release.t7  https://s3.amazonaws.com/opennmt-models/onmt_baseline_wmt15-all.en-de_epoch13_7.19_release.t7
+RUN wget -O ~/OpenNMT/truecase-model.en http://data.statmt.org/rsennrich/wmt16_systems/en-de/truecase-model.en
 
-
-RUN wget -O ~/OpenNMT/translate.sh http://download1084.mediafire.com/p7m12cyr968g/kf2qt73d6x6u1b7/run_translate.sh
-
+RUN wget -O ~/OpenNMT/translate.sh https://gist.githubusercontent.com/Khakhulin/2109cf96401a53fc6bed6256b4a57da8/raw/0fd0375491512dabcef99f32cf6168aa2eec8408/translate.sh
 RUN chmod a+x ~/OpenNMT/translate.sh
 
 RUN mkdir /data
 RUN mkdir /output
 
 CMD ["./translate.sh"]
-
