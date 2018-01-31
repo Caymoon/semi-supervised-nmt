@@ -1,26 +1,26 @@
-#!/bin/sh
+pip install ipdb
 
-# suffix of source language
-SRC=en
+WORK_DIR="/notebooks"
+cd $WORK_DIR
 
-# suffix of target language
-TRG=de
+mkdir tmp
+mkdir data
 
-# Path to moses decoder: https://github.com/moses-smt/mosesdecoder
-mosesdecoder=/path/to/mosesdecoder
+cd /data/
+python divide.py
+cd $WORK_DIR
 
-# preprocess
-cat /data/input.txt | \
-$mosesdecoder/scripts/tokenizer/normalize-punctuation.perl -l $SRC | \
-$mosesdecoder/scripts/tokenizer/tokenizer.perl -l $SRC -penn | \
-$mosesdecoder/scripts/recaser/truecase.perl -model ~/OpenNMT/truecase-model.$SRC >  /data/input.txt.moses
+# Preprocessing
+cp /data/corpus1.txt $WORK_DIR/data/corpus.train.0
+cp /data/corpus2.txt $WORK_DIR/data/corpus.train.1
+cp /data/train_src.txt $WORK_DIR/data/corpus.test.0
+cp /data/train_tgt.txt $WORK_DIR/data/corpus.test.1
+cp /data/input.txt $WORK_DIR/data/corpus.test
 
-# translate
-cd ~/OpenNMT
-th translate.lua -model ./onmt_baseline_wmt15-all.en-de_epoch13_7.19_release.t7  -src /data/input.txt.moses -output /output/output.txt.moses -batch_size 64
+cd $WORK_DIR/language-style-transfer/code
 
-# postprocess
-cat /output/output.txt.moses | \
-sed 's/\@\@ //g' | \
-$mosesdecoder/scripts/recaser/detruecase.perl | \
-$mosesdecoder/scripts/tokenizer/detokenizer.perl -l $TRG > /output/output.txt
+# Training
+python2 style_transfer.py --train $WORK_DIR/data/corpus.train --vocab $WORK_DIR/tmp/corpus.vocab --model $WORK_DIR/tmp/model --batch_size 32 --max_epochs 1
+
+# Inference
+python2 style_transfer.py --test $WORK_DIR/data/corpus.test --output $WORK_DIR/tmp/sentiment.test --vocab $WORK_DIR/tmp/corpus.vocab --model $WORK_DIR/tmp/model --batch_size 32
