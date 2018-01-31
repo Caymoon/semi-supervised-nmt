@@ -20,7 +20,7 @@ python preprocess.py -train_src ~/data/target.train.txt -train_tgt ~/data/source
 
 #./tools/embeddings_to_torch.py -emb_file "src_vectors" -dict_file ~/data/demo.vocab.pt -output_file ~/data/embeddings
 
-python train.py -data ~/data/demo -save_model ~/demo-model -epochs 20 -batch_size=64 -gpuid 0 -pre_word_vecs_enc ~/data/embeddings.enc.pt
+python train.py -data ~/data/demo -save_model ~/demo-model -epochs 20 -batch_size=64 -gpuid 0 #-pre_word_vecs_enc ~/data/embeddings.enc.pt
 
 NEWEST_MODEL=$(ls -Ct ~ | awk '{print $1}' | head -n1)
 python translate.py -model ~/$NEWEST_MODEL -src ~/data/target.mono.txt -output ~/data/source.mono.txt -replace_unk -verbose -gpu 0
