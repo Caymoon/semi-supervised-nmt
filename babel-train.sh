@@ -6,6 +6,7 @@ cd $WORK_DIR
 mkdir tmp
 mkdir data
 
+mv divide.py /data/divide.py
 cd /data/
 python divide.py
 cd $WORK_DIR
