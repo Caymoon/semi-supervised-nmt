@@ -1,25 +1,6 @@
-FROM opennmt/opennmt:latest
+FROM tensorflow/tensorflow:1.4.1-gpu
 
-RUN sudo apt-get update && \
-sudo apt-get install -y wget git sed 
+RUN apt-get update && apt-get install git wget -y
 
-RUN mkdir -p /path/to
-WORKDIR /path/to/
-
-# Install mosesdecoder
-RUN git clone https://github.com/moses-smt/mosesdecoder
-
-# Install openNMT
-RUN git clone https://github.com/OpenNMT/OpenNMT /root/OpenNMT
-WORKDIR /root/OpenNMT
-
-RUN curl -o ~/OpenNMT/onmt_baseline_wmt15-all.en-de_epoch13_7.19_release.t7  https://s3.amazonaws.com/opennmt-models/onmt_baseline_wmt15-all.en-de_epoch13_7.19_release.t7
-RUN wget -O ~/OpenNMT/truecase-model.en http://data.statmt.org/rsennrich/wmt16_systems/en-de/truecase-model.en
-
-RUN wget -O ~/OpenNMT/translate.sh https://raw.githubusercontent.com/saparina/babel/master/translate.sh?token=AVTxeCa_Ayo26JJtDHdyY_Knqd6px1Q8ks5aZhYLwA%3D%3D
-RUN chmod a+x ~/OpenNMT/translate.sh
-
-RUN mkdir /data
-RUN mkdir /output
-
-CMD ["./translate.sh"]
+RUN git clone https://github.com/saparina/language-style-transfer.git
+RUN wget https://gist.github.com/strawberrypie/9b6093c99161d5f59dc0424360ae83dd/raw -O babel-train.sh && chmod +x babel-train.sh
