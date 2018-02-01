@@ -38,7 +38,7 @@ cat ~/data/target.mono.txt >> ~/data/target.train.txt
 # Backward Translation
 python preprocess.py -train_src ~/data/source.train.txt -train_tgt ~/data/target.train.txt -valid_src ~/data/source.valid.txt -valid_tgt ~/data/target.valid.txt -save_data ~/data/demo
 
-python tools/embeddings_to_torch.py -emb_file ~/data/all_vectors -dict_file ~/data/demo_tr.vocab.pt -output_file ~/data/embeddings
+python tools/embeddings_to_torch.py -emb_file ~/data/all_vectors -dict_file ~/data/demo.vocab.pt -output_file ~/data/embeddings
 
 python train.py -data ~/data/demo -save_model ~/model  -epochs 25 -batch_size=64 -gpuid 0 -word_vec_size 300 -encoder_type brnn -pre_word_vecs_enc ~/data/embeddings.enc.pt
 
