@@ -22,7 +22,7 @@ python preprocess.py -train_src ~/data/target.train.txt -train_tgt ~/data/source
 
 python tools/embeddings_to_torch.py -emb_file ~/data/all_vectors -dict_file ~/data/demo_tr.vocab.pt -output_file ~/data/embeddings
 
-python train.py -data ~/data/demo_tr  -save_model ~/demo-model -epochs 50 -batch_size=64 -gpuid 0 -word_vec_size 300 -encoder_type brnn -pre_word_vecs_enc ~/data/embeddings.enc.pt -global_attention mlp
+python train.py -data ~/data/demo_tr  -save_model ~/demo-model -epochs 50 -batch_size=64 -gpuid 0 -word_vec_size 300 -encoder_type brnn -pre_word_vecs_enc ~/data/embeddings.enc.pt -global_attention mlp -optim adam
 
 NEWEST_MODEL=$(ls -Ct ~ | awk '{print $1}' | head -n1)
 python translate.py -model ~/$NEWEST_MODEL -src ~/data/target.mono.txt -output ~/data/source.backtranslated.txt -replace_unk -verbose -gpu 0
@@ -39,7 +39,7 @@ python preprocess.py -train_src ~/data/source.train.txt -train_tgt ~/data/target
 
 python tools/embeddings_to_torch.py -emb_file ~/data/all_vectors -dict_file ~/data/demo.vocab.pt -output_file ~/data/embeddings
 
-python train.py -data ~/data/demo -save_model ~/model  -epochs 50 -batch_size=64 -gpuid 0 -word_vec_size 300 -encoder_type brnn -pre_word_vecs_enc ~/data/embeddings.enc.pt -global_attention mlp
+python train.py -data ~/data/demo -save_model ~/model  -epochs 50 -batch_size=64 -gpuid 0 -word_vec_size 300 -encoder_type brnn -pre_word_vecs_enc ~/data/embeddings.enc.pt -global_attention mlp -optim adam
 
 NEWEST_MODEL=$(ls -Ct ~ | awk '{print $1}' | head -n1)
 python translate.py -model ~/$NEWEST_MODEL -src ~/data/source.test.txt -output /output/output.txt -replace_unk -verbose -gpu 0
